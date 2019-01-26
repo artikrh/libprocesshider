@@ -1,4 +1,4 @@
-# libprocesshider
+# libprocesshider [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)]
 
 
 Hide a process under Linux using the LD Preloader.
