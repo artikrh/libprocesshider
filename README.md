@@ -7,7 +7,7 @@ Full tutorial available at https://sysdigcloud.com/hiding-linux-processes-for-fu
 
 ## Usage
 
-In short, compile the library:
+In short, first modify [`processhider.c`](https://github.com/artikrh/libprocesshider/blob/master/processhider.c#L9) to set a process name of your liking and then compile the library as a shared object:
 
 ```
 $ mkdir {32,64}
@@ -22,7 +22,7 @@ Note: Since we are going to use `$LIB` environment variable, the above `$LIB` sh
 Load it with the global dynamic linker:
 
 ```
-# echo '/usr/$LIB/libprocesshider.so' > /etc/ld.so.preload
+$ sudo echo '/usr/$LIB/libprocesshider.so' > /etc/ld.so.preload
 ```
 
 And your process will be off the radar from tools such as `ps`.
