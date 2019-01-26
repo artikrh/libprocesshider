@@ -1,36 +1,28 @@
-libprocesshider
-===============
+# libprocesshider
 
-Hide a process under Linux using the ld preloader.
+
+Hide a process under Linux using the LD Preloader.
 
 Full tutorial available at https://sysdigcloud.com/hiding-linux-processes-for-fun-and-profit/
+
+## Usage
 
 In short, compile the library:
 
 ```
-gianluca@sid:~/libprocesshider$ make
-gcc -Wall -fPIC -shared -o libprocesshider.so processhider.c -ldl
-gianluca@sid:~/libprocesshider$ mkdir {32,64}
-gianluca@sid:~/libprocesshider$ gcc -Wall -m32 -fPIC -shared -o 32/libprocesshider.so processhider.c -ldl
-gianluca@sid:~/libprocesshider$ gcc -Wall -fPIC -shared -o 64/libprocesshider.so processhider.c -ldl
-gianluca@sid:~/libprocesshider$ sudo mv 32/libprocesshider.so /usr/lib32/libprocesshider.so
-gianluca@sid:~/libprocesshider$ sudo mv 64/libprocesshider.so /usr/lib/x86_64-linux-gnu/libprocesshider.so
+$ mkdir {32,64}
+$ gcc -Wall -m32 -fPIC -shared -o 32/libprocesshider.so processhider.c -ldl
+$ gcc -Wall -fPIC -shared -o 64/libprocesshider.so processhider.c -ldl
+$ sudo mv 32/libprocesshider.so /usr/lib32/libprocesshider.so
+$ sudo mv 64/libprocesshider.so /usr/lib/x86_64-linux-gnu/libprocesshider.so
 ```
 
-Load it with the global dynamic linker
+Note: Since we are going to use `$LIB` environment variable, the above `$LIB` shell expansion to `lib32` for 32-bit binaries and `lib/x86_64-linux-gnu` for 64-bit is valid for Debian based distributions only. For other Linux systems, you can intercept the right `$LIB` expansion using the `strace` tool - more specificaly, the `openat()` system call (as others may use `lib64` for 64-bit and `lib` for 32-bit executables).
+
+Load it with the global dynamic linker:
 
 ```
-root@sid:~# echo '/usr/$LIB/libprocesshider.so' > /etc/ld.so.preload
+# echo '/usr/$LIB/libprocesshider.so' > /etc/ld.so.preload
 ```
 
-And your process will be off the radar 
-
-```
-gianluca@sid:~$ sudo ps aux
-USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
-...
-
-gianluca@sid:~$ sudo lsof -ni
-COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME
-...
-```
+And your process will be off the radar from tools such as `ps`.
