@@ -5,7 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 
-// Define your process name here; any process which has 'node' in it, will be hidden
+// Define your process name here; in this case any process which has 'node' in it, will be hidden
 static const char* process_to_filter = "node";
 
 // Get a directory name given a DIR* handle
